@@ -1,4 +1,12 @@
-.python-version
-.vscode
-.idea/
-__pycache__
+.*.swp
+doc
+tags
+build
+target
+ctags.rust
+*.csv
+*.tsv
+*.lua
+main
+*.idx
+builds
