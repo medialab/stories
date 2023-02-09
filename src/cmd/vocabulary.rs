@@ -84,18 +84,26 @@ impl DocumentFrequencies {
 #[clap(about = "Extract tweet vocabulary from the given CSV file.")]
 pub struct Opts {
     input: String,
+
     #[clap(long)]
     merge: Option<String>,
+
     /// Path (optional) to a custom stopwords list in csv format (one word per row,
     /// with headers). Your stopwords will be added to the default stopwords list.
     #[clap(long)]
     stopwords: Option<String>,
+
+    #[clap(long, default_value = "1")]
+    ngrams: u8,
+
     // NOTE: it is written as 10 in the original implementation but the condition
     // used with it makes it actually 11 conceptually.
     #[clap(long, default_value = "11")]
     min_df: usize,
+
     #[clap(long)]
     total: Option<u64>,
+
     #[clap(long)]
     tsv: bool,
 }
@@ -148,7 +156,8 @@ pub fn run(cli_args: &Opts) -> Result<(), Box<dyn Error>> {
                 &record
                     .get(text_column_index)
                     .expect("Found a row with fewer columns than expected!"),
-                true
+                true,
+                cli_args.ngrams,
             )
         })
         .for_each(|tokens| {

@@ -13,7 +13,6 @@ pub fn vectorize(
     let mut is_relevant = false;
     let mut term_frequency: HashMap<&String, f64> = HashMap::new();
 
-
     if binary {
         for token in tokens {
             match vocabulary.get(token) {
@@ -31,7 +30,7 @@ pub fn vectorize(
         for token in tokens {
             *term_frequency.entry(token).or_insert(0.0) += 1.0;
         }
-    
+
         for (token, tf) in term_frequency {
             match vocabulary.get(token) {
                 Some((dim, w)) => {
@@ -45,7 +44,6 @@ pub fn vectorize(
                 None => continue,
             }
         }
-        
     }
 
     if !is_relevant {

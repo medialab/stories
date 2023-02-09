@@ -21,10 +21,15 @@ fn calculate_hash<T: Hash>(t: &T) -> u64 {
 #[clap(about = "Tokenize tweet text contained in a CSV file.")]
 pub struct Opts {
     input: String,
+
     #[clap(long)]
     total: Option<u64>,
+
     #[clap(long)]
     tsv: bool,
+
+    #[clap(long, default_value = "1")]
+    ngrams: u8,
 }
 
 pub fn run(cli_args: &Opts) -> Result<(), Box<dyn Error>> {
@@ -55,7 +60,8 @@ pub fn run(cli_args: &Opts) -> Result<(), Box<dyn Error>> {
                 &record
                     .get(text_column_index)
                     .expect("Found a row with fewer columns than expected!"),
-                true
+                true,
+                cli_args.ngrams,
             );
 
             (i, calculate_hash(&tokens), tokens)

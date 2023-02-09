@@ -572,6 +572,27 @@ dependencies = [
 ]
 
 [[package]]
+name = "singerie"
+version = "0.0.1"
+dependencies = [
+ "bitintr",
+ "chrono",
+ "chrono-tz",
+ "clap",
+ "compound_duration",
+ "csv",
+ "indicatif",
+ "itertools",
+ "lazy_static",
+ "rayon",
+ "regex 1.5.4",
+ "serde",
+ "sparseset",
+ "tab-hash",
+ "unidecode",
+]
+
+[[package]]
 name = "sparseset"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -652,27 +673,6 @@ dependencies = [
  "libc",
  "wasi 0.10.0+wasi-snapshot-preview1",
  "winapi",
-]
-
-[[package]]
-name = "twembeddings"
-version = "0.1.0"
-dependencies = [
- "bitintr",
- "chrono",
- "chrono-tz",
- "clap",
- "compound_duration",
- "csv",
- "indicatif",
- "itertools",
- "lazy_static",
- "rayon",
- "regex 1.5.4",
- "serde",
- "sparseset",
- "tab-hash",
- "unidecode",
 ]
 
 [[package]]

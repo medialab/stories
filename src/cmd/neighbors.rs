@@ -20,21 +20,33 @@ struct VocRecord {
 #[clap(about = "Find tweets nearest neighbors.")]
 pub struct Opts {
     voc_input: String,
+
     input: String,
+
     #[clap(long, default_value = "5")]
     query_size: u8,
+
     #[clap(long, default_value = "64")]
     max_candidates_per_dimension: usize,
+
     #[clap(long)]
     total: Option<u64>,
+
     #[clap(long, short, default_value = "0.7")]
     threshold: f64,
+
+    #[clap(long, default_value = "1")]
+    ngrams: u8,
+
     #[clap(long, short, default_value = "0.0")]
     idf_threshold: f64,
+
     #[clap(long)]
     tsv: bool,
+
     #[clap(short, long)]
     binary: bool,
+
     #[clap(short, long)]
     window: usize,
 }
@@ -88,9 +100,14 @@ pub fn run(cli_args: &Opts) -> Result<(), Box<dyn Error>> {
         let text_cell = &record[text_column_index];
         let tweet_id: u64 = record[id_column_index].parse()?;
 
-        let tokens = tokenizer.tokenize(text_cell, cli_args.binary);
+        let tokens = tokenizer.tokenize(text_cell, cli_args.binary, cli_args.ngrams);
 
-        let vector = vectorize(&vocabulary, &tokens, cli_args.idf_threshold, cli_args.binary);
+        let vector = vectorize(
+            &vocabulary,
+            &tokens,
+            cli_args.idf_threshold,
+            cli_args.binary,
+        );
 
         let clustering_result = clustering.nearest_neighbor(i, tweet_id, vector);
 

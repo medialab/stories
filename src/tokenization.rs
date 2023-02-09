@@ -1,5 +1,7 @@
 use std::borrow::Cow;
+use std::cmp;
 use std::collections::{HashSet, VecDeque};
+use std::convert::TryInto;
 use std::str::CharIndices;
 
 use itertools::Itertools;
@@ -264,10 +266,30 @@ impl Tokenizer {
         self
     }
 
-    pub fn tokenize(&self, text: &str, unique: bool) -> Vec<String> {
+    pub fn tokenize(&self, text: &str, unique: bool, max_ngram: u8) -> Vec<String> {
         let tokens = Tokens::new(text, self);
+        let ngrams: Vec<String> = self.word_n_grams(tokens, max_ngram);
         if unique {
-            return tokens.unique().collect();
+            return ngrams.into_iter().unique().collect();
+        }
+        return ngrams;
+    }
+
+    pub fn word_n_grams(&self, tokens: Tokens, max_ngram: u8) -> Vec<String> {
+        if max_ngram != 1 {
+            let original_tokens = tokens.collect::<Vec<String>>();
+            let mut new_tokens = original_tokens.to_vec();
+            let size_original_tokens = (original_tokens.len() + 1).try_into().unwrap();
+
+            for n in 2..cmp::min(max_ngram + 1, size_original_tokens) {
+                let max_index: usize = (size_original_tokens - n).into();
+                for i in 0..max_index {
+                    let joined = &original_tokens[i..i + n as usize].join(" ");
+                    new_tokens.push(joined.to_string())
+                }
+            }
+
+            return new_tokens;
         }
         return tokens.collect::<Vec<String>>();
     }
@@ -378,30 +400,60 @@ mod test {
         let default_tokenizer = Tokenizer::new();
 
         assert_eq!(
-        default_tokenizer.tokenize("Hello World, this is I the élémental @Yomgui http://lemonde.fr type looooool! #Whatever", false),
+        default_tokenizer.tokenize("Hello World, this is I the élémental @Yomgui http://lemonde.fr type looooool! #Whatever", false, 1),
         vec!["hello", "world", "this", "is", "the", "elemental", "yomgui", "type", "loool", "whatever"]
     );
 
         assert_eq!(
-            default_tokenizer.tokenize("Hello #EpopeeRusse! What's brewing?,", false),
+            default_tokenizer.tokenize("Hello #EpopeeRusse! What's brewing?,", false, 1),
             vec!["hello", "epopee", "russe", "what", "brewing"]
         );
 
         assert_eq!(
-            default_tokenizer.tokenize("Hello to this number: 400000 and this one: 34", false),
+            default_tokenizer.tokenize("Hello to this number: 400000 and this one: 34", false, 1),
             vec!["hello", "to", "this", "number", "and", "this", "one", "34"]
         );
 
         assert_eq!(
-            default_tokenizer.tokenize("Hello! hello bonjour hello?", true),
+            default_tokenizer.tokenize("Hello! hello bonjour hello?", true, 1),
             vec!["hello", "bonjour"]
+        );
+
+        assert_eq!(
+            default_tokenizer.tokenize("doter les sciences sociales de méthodes et d’instruments d’analyse des traces numériques.", 
+            false,
+            2
+        ),
+            vec!["doter",
+            "les",
+            "sciences",
+            "sociales",
+            "de",
+            "methodes",
+            "et",
+            "instruments",
+            "analyse",
+            "des",
+            "traces",
+            "numeriques",
+            "doter les",
+            "les sciences",
+            "sciences sociales",
+            "sociales de",
+            "de methodes",
+            "methodes et",
+            "et instruments",
+            "instruments analyse",
+            "analyse des",
+            "des traces",
+            "traces numeriques"]
         );
 
         let mut tokenizer_with_stopwords = Tokenizer::new();
         tokenizer_with_stopwords.add_stop_word("world");
 
         assert_eq!(
-            tokenizer_with_stopwords.tokenize("Hello World!", false),
+            tokenizer_with_stopwords.tokenize("Hello World!", false, 1),
             vec!["hello"]
         );
     }
