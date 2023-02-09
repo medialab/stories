@@ -1,6 +1,6 @@
 [package]
-name = "twembeddings"
-version = "0.1.0"
+name = "singerie"
+version = "0.0.1"
 authors = [
   "bmaz <beatrice.mazoyer@sciencespo.fr",
   "Yomguithereal <guillaume.plique@sciencespo.fr>"
