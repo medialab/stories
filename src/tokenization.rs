@@ -279,9 +279,11 @@ impl Tokenizer {
         if max_ngram != 1 {
             let original_tokens = tokens.collect::<Vec<String>>();
             let mut new_tokens = original_tokens.to_vec();
-            let size_original_tokens = (original_tokens.len() + 1).try_into().unwrap();
 
-            for n in 2..cmp::min(max_ngram + 1, size_original_tokens) {
+            let usize_max_ngram: usize = max_ngram.into();
+            let size_original_tokens = original_tokens.len() + 1;
+
+            for n in 2..cmp::min(usize_max_ngram + 1, size_original_tokens) {
                 let max_index: usize = (size_original_tokens - n).into();
                 for i in 0..max_index {
                     let joined = &original_tokens[i..i + n as usize].join(" ");
