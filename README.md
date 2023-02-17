@@ -16,12 +16,12 @@ SINGERIE="./target/release/singerie"
 
 ### Extract vocabulary
 ```
-$SINGERIE vocab my_file --ngrams 2 > my_vocab.csv
+$SINGERIE vocab my_file.csv --ngrams 2 > my_vocab.csv
 ```
 
 ### Determine time window
 ```
-WINDOW=`$SINGERIE window my_file --raw`
+WINDOW=`$SINGERIE window my_file.csv --raw`
 ```
 
 ### Apply clustering algorithm
