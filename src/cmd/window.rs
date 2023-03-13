@@ -1,5 +1,5 @@
 use chrono_tz::Tz;
-use clap::Clap;
+use clap::Parser;
 use std::boxed::Box;
 use std::collections::HashMap;
 use std::error::Error;
@@ -7,7 +7,7 @@ use std::error::Error;
 use crate::cli_utils::{acquire_progress_indicator, get_column_index};
 use crate::date_utils::inferred_date;
 
-#[derive(Clap, Debug)]
+#[derive(Parser, Debug)]
 #[clap(about = "Infer the size of the window for the clustering algorithm.")]
 pub struct Opts {
     input: String,

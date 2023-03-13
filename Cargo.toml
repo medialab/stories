@@ -2,16 +2,24 @@
 name = "singerie"
 version = "0.0.1"
 authors = [
-  "bmaz <beatrice.mazoyer@sciencespo.fr",
-  "Yomguithereal <guillaume.plique@sciencespo.fr>"
+  "Yomguithereal <guillaume.plique@sciencespo.fr>",
+  "bmaz <beatrice.mazoyer@sciencespo.fr"
 ]
 edition = "2018"
+description = "Clustering of textual documents with time window"
+documentation = "https://github.com/medialab/singerie"
+homepage = "https://github.com/medialab/singerie"
+repository = "https://github.com/medialab/singerie"
+readme = "README.md"
+keywords = ["clustering", "NLP", "text"]
+license = "Unlicense/MIT"
+autotests = false
 
 [dependencies]
 bitintr = "0.3.0"
-clap = "3.0.0-beta.2"
+clap = { version = "3.2.23", features = ["derive"] }
 chrono = "0.4.19"
-chrono-tz = "0.4"
+chrono-tz = "0.4.1"
 compound_duration = "1.2.0"
 csv = "1.1"
 indicatif = "0.16.2"

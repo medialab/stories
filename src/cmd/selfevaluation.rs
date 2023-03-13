@@ -2,11 +2,11 @@ use std::boxed::Box;
 use std::collections::HashMap;
 use std::error::Error;
 
-use clap::Clap;
+use clap::Parser;
 
 use crate::cli_utils::{acquire_progress_indicator, get_column_index};
 
-#[derive(Clap, Debug)]
+#[derive(Parser, Debug)]
 #[clap(about = "Evaluate a clustering result on a file containing both the truth and the results.")]
 pub struct Opts {
     predicted: String,

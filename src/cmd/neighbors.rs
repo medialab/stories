@@ -2,7 +2,7 @@ use std::boxed::Box;
 use std::collections::HashMap;
 use std::error::Error;
 
-use clap::Clap;
+use clap::Parser;
 use serde::Deserialize;
 
 use crate::cli_utils::{acquire_progress_indicator, acquire_tokenizer, get_column_index};
@@ -16,7 +16,7 @@ struct VocRecord {
     idf: f64,
 }
 
-#[derive(Clap, Debug)]
+#[derive(Parser, Debug)]
 #[clap(about = "Find tweets nearest neighbors.")]
 pub struct Opts {
     voc_input: String,

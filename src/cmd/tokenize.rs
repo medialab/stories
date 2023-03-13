@@ -4,7 +4,7 @@ use std::error::Error;
 use std::hash::{Hash, Hasher};
 use std::sync::Mutex;
 
-use clap::Clap;
+use clap::Parser;
 use rayon::prelude::*;
 
 use crate::cli_utils::{
@@ -17,7 +17,7 @@ fn calculate_hash<T: Hash>(t: &T) -> u64 {
     hasher.finish()
 }
 
-#[derive(Clap, Debug)]
+#[derive(Parser, Debug)]
 #[clap(about = "Tokenize tweet text contained in a CSV file.")]
 pub struct Opts {
     input: String,

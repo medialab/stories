@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use std::error::Error;
 use std::sync::Mutex;
 
-use clap::Clap;
+use clap::Parser;
 use rayon::prelude::*;
 use serde::Deserialize;
 
@@ -80,7 +80,7 @@ impl DocumentFrequencies {
     }
 }
 
-#[derive(Clap, Debug)]
+#[derive(Parser, Debug)]
 #[clap(about = "Extract tweet vocabulary from the given CSV file.")]
 pub struct Opts {
     input: String,

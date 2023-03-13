@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate lazy_static;
 
-use clap::Clap;
+use clap::Parser;
 
 #[macro_use]
 pub mod cli_utils;
@@ -13,14 +13,14 @@ pub mod stop_words;
 pub mod tokenization;
 pub mod vectorization;
 
-#[derive(Clap, Debug)]
+#[derive(Parser, Debug)]
 #[clap(version = "1.0")]
 struct Opts {
     #[clap(subcommand)]
     command: SubCommand,
 }
 
-#[derive(Clap, Debug)]
+#[derive(Parser, Debug)]
 enum SubCommand {
     Eval(cmd::evaluation::Opts),
     Selfeval(cmd::selfevaluation::Opts),
