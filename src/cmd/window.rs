@@ -8,10 +8,13 @@ use crate::cli_utils::{acquire_progress_indicator, get_column_index};
 use crate::date_utils::inferred_date;
 
 #[derive(Parser, Debug)]
-#[clap(about = "Infer the size of the time window for the clustering algorithm.")]
+#[clap(
+    about = "Infer the size, in number of documents, of the time window for the clustering algorithm."
+)]
 pub struct Opts {
     input: String,
 
+    ///Use --raw to get the number of documents without other message.
     #[clap(long)]
     raw: bool,
 
