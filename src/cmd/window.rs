@@ -8,18 +8,29 @@ use crate::cli_utils::{acquire_progress_indicator, get_column_index};
 use crate::date_utils::inferred_date;
 
 #[derive(Parser, Debug)]
-#[clap(about = "Infer the size of the window for the clustering algorithm.")]
+#[clap(about = "Infer the size of the time window for the clustering algorithm.")]
 pub struct Opts {
     input: String,
+
     #[clap(long)]
     raw: bool,
+
     ///Name of the column in the csv input containing the dates of the documents
     #[clap(long, default_value = "created_at")]
     datecol: String,
+
+    ///Size of the window in number of days
+    #[clap(long, value_parser, default_value_t = 0.5)]
+    // default_value works on pre-parsed values (ie strings), like #[clap(default_value = "100")]
+    // default_value_t works on post-parsed values (ie your data type), like #[clap(default_value_t = 100)]
+    size: f64,
+
     #[clap(long)]
     total: Option<u64>,
+
     #[clap(long)]
     tsv: bool,
+
     ///If timestamps are provided, they will be parsed as UTC timestamps, then converted to
     ///the provided timezone. Other date formats will not be converted.
     #[clap(long, default_value = "Europe/Paris")]
@@ -56,14 +67,13 @@ pub fn run(cli_args: &Opts) -> Result<(), Box<dyn Error>> {
         days.entry(day).and_modify(|x| *x += 1).or_insert(1);
     }
 
-    let mut window = 0;
+    let mut day_average = 0;
 
     for day_count in days.values() {
-        window += day_count;
+        day_average += day_count;
     }
 
-    let mut window = ((window as f64) / (days.len() as f64)).floor() as usize;
-    window /= 2;
+    let window = (cli_args.size * (day_average as f64) / (days.len() as f64)).floor() as usize;
 
     bar.finish_at_current_pos();
 

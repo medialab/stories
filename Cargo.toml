@@ -1,6 +1,6 @@
 [package]
 name = "singerie"
-version = "0.0.1"
+version = "0.0.2"
 authors = [
   "Yomguithereal <guillaume.plique@sciencespo.fr>",
   "bmaz <beatrice.mazoyer@sciencespo.fr"
