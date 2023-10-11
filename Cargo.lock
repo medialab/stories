@@ -701,7 +701,13 @@ dependencies = [
 ]
 
 [[package]]
-name = "singerie"
+name = "sparseset"
+version = "1.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "52cdcc78334463b00033480504b70cd1108b6fd6d0ab8b826a289f7ad616af6d"
+
+[[package]]
+name = "stories"
 version = "0.0.2"
 dependencies = [
  "bitintr",
@@ -720,12 +726,6 @@ dependencies = [
  "tab-hash",
  "unidecode",
 ]
-
-[[package]]
-name = "sparseset"
-version = "1.0.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "52cdcc78334463b00033480504b70cd1108b6fd6d0ab8b826a289f7ad616af6d"
 
 [[package]]
 name = "strsim"
