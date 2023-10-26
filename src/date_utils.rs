@@ -1,6 +1,7 @@
 use chrono::NaiveDateTime;
-use chrono::TimeZone;
+use chrono::{DateTime, TimeZone, Utc};
 use chrono_tz::{Tz, UTC};
+use dateparser::parse_with_timezone;
 use std::error::Error;
 
 const LONG_DATE_FORMAT: &str = "%a %b %d %H:%M:%S +0000 %Y";
@@ -39,4 +40,18 @@ pub fn inferred_date(date_cell: &str, tz: &Tz) -> Result<NaiveDateTime, Box<dyn 
         date_from_timestamp(date_cell, &tz)?
     };
     Ok(datetime)
+}
+
+pub fn parse_timezone(tz: String) -> Result<Tz, String> {
+    match tz.parse::<Tz>() {
+        Ok(timezone) => Ok(timezone),
+        _ => Err(format!("{} is not a valid timezone", tz)),
+    }
+}
+
+pub fn parse_date(date: &str, tz: Tz) -> Result<DateTime<Utc>, String> {
+    match parse_with_timezone(&date, &tz) {
+        Ok(time) => Ok(time),
+        _ => Err(format!("Time format could not be inferred for {}", date)),
+    }
 }
