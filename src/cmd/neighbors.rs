@@ -12,7 +12,6 @@ use crate::vectorization::vectorize;
 #[derive(Debug, Deserialize)]
 struct VocRecord {
     token: String,
-    df: usize,
     idf: f64,
 }
 
