@@ -5,7 +5,7 @@ use std::collections::HashMap;
 use std::error::Error;
 
 use crate::cli_utils::{acquire_progress_indicator, get_column_index};
-use crate::date_utils::inferred_date;
+use crate::date_utils::{parse_date, parse_timezone};
 
 #[derive(Parser, Debug)]
 #[clap(
@@ -34,8 +34,6 @@ pub struct Opts {
     #[clap(long)]
     tsv: bool,
 
-    ///If timestamps are provided, they will be parsed as UTC timestamps, then converted to
-    ///the provided timezone. Other date formats will not be converted.
     #[clap(long, default_value = "Europe/Paris")]
     timezone: String,
 }
@@ -61,11 +59,11 @@ pub fn run(cli_args: &Opts) -> Result<(), Box<dyn Error>> {
 
         let date_cell = &record[date_column_index];
 
-        let tz: Tz = cli_args.timezone.parse().or(Err("Unknown timezone"))?;
+        let input_tz: Tz = parse_timezone(cli_args.timezone.clone())?;
 
-        let local_datetime = inferred_date(&date_cell, &tz)?;
+        let parsed_date = parse_date(&date_cell, input_tz)?;
 
-        let day = local_datetime.format("%Y-%m-%d").to_string();
+        let day = parsed_date.format("%Y-%m-%d").to_string();
 
         days.entry(day).and_modify(|x| *x += 1).or_insert(1);
     }

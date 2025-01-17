@@ -1,7 +1,6 @@
 use std::borrow::Cow;
 use std::cmp;
 use std::collections::{HashSet, VecDeque};
-use std::convert::TryInto;
 use std::str::CharIndices;
 
 use itertools::Itertools;
@@ -422,7 +421,7 @@ mod test {
         );
 
         assert_eq!(
-            default_tokenizer.tokenize("doter les sciences sociales de méthodes et d’instruments d’analyse des traces numériques.", 
+            default_tokenizer.tokenize("doter les sciences sociales de méthodes et d’instruments d’analyse des traces numériques.",
             false,
             2
         ),
